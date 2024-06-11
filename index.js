@@ -1,5 +1,6 @@
 const express = require("express");
 const urlRouter = require("./routes/url");
+const userRoute = require("./routes/user.js");
 
 const { connectToMongoDB } = require("./connect");
 const URL = require("./models/url");
@@ -13,7 +14,7 @@ connectToMongoDB("mongodb://127.0.0.1:27017/short-url")
   .catch((err) => console.error("MongoDB connection error:", err));
 
 app.use("/url", urlRouter);
-app.get("/:shortId", async (req, res) => {
+app.get("url/:shortId", async (req, res) => {
   const shortId = req.params.shortId;
   const entery = await URL.findOneAndUpdate(
     { shortId },
@@ -25,9 +26,10 @@ app.get("/:shortId", async (req, res) => {
       },
     }
   );
-  res.redirect(entery.redirectURL);
+  res.redirect(entery?.redirectURL);
 });
 app.use("/url/analytics", urlRouter);
+app.use("/createUser", userRoute);
 
 app.listen(PORT, () => {
   console.log("Server started at port =", PORT);
