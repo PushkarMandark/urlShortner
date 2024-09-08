@@ -13,6 +13,7 @@ connectToMongoDB("mongodb://127.0.0.1:27017/short-url")
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
+// routes
 app.use("/url", urlRouter);
 app.get("url/:shortId", async (req, res) => {
   const shortId = req.params.shortId;
